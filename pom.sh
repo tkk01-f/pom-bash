@@ -1,26 +1,31 @@
 #!/bin/bash
 
-tms=60
-#for point in 1 2 3; do
-#       echo "#"
-#done       
-
 file=$1
-session_start=$(date "+%T")
+minutes=$2
+noti_sound="./sounds/achievement-unlocked.ogg"
 
-#	Progress bar 
+start_time=$(date "+%T")
+
 clear
+
+echo -e " --- Sesion starts : $start_time ---"
+
 cat $file
-echo " ### Pomodoro bash tracker ###"
-echo " --- Sesion starts : $session_start ---"
-while [ $tms -gt 1 ] 
+
+echo -e "\n ### Pomodoro bash tracker ###"
+
+paplay $noti_sound
+
+while [ $minutes -gt 1 ] 
 do
-	printf "#"
-	sleep 1
-	((tms--))
+	printf "\e[44m-\e[0m"
+	sleep 60
+	((minutes--))
 done
 
-sesion_end=$(date "+%T")
-echo " "
-echo " --- Sesion end: $sesion_end --- "
-date
+end_time=$(date "+%T")
+echo -e "\n --- Sesion end: $end_time --- "
+
+echo "| $(date "+%D") | $start_time | $end_time |" >> ./sessions.md
+
+paplay $noti_sound
